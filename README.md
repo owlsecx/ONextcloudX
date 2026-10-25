@@ -18,21 +18,18 @@
 
 ## 📌 Overview
 
-Nextcloud / ownCloud configuration hardening auditor (offline, read-only)
+ONextcloudX is an offline, read-only Nextcloud / ownCloud configuration hardening auditor. It safely tokenizes `config.php` (never executes PHP), imports `occ config:list` / `occ app:list` outputs, and reviews trusted domains, secrets, data-dir placement, sharing policy, 2FA, and risky apps. Scope is application config only; reports export to TXT, Markdown, JSON, CSV, or SARIF.
 
 ---
 
 ## ✨ Features
 
-- Safe PHP array-literal tokenizer / parser for config/config.php and config/*.config.php — the PHP file is NEVER executed or included
-- occ config:list --private JSON (secrets masked) and occ app:list (JSON or text) import
-- Core — debug, trusted_domains, overwriteprotocol, trusted_proxies, brute-force / rate-limit protection, SSRF (allow_local_remote_servers), integrity check, app store source, web updater, maintenance, EOL
-- Secrets — secret / passwordsalt / dbpassword / mail_smtppassword / redis password strength (masked)
-- Data directory placement inside webroot, permissions, .ocdata, deny .htaccess; config.php 0640 check
-- Sharing policy — link passwords, expiry, public upload, share-by-mail, enumeration; 2FA enforcement
-- Risky apps — files_external local storage, workflow_script, impersonate, missing admin_audit
-- Export TXT / Markdown / JSON / CSV / SARIF 2.1.0
-- Self-test --demo, CI gates --fail-on / --min-severity
+- Safe PHP array-literal parser for config.php / *.config.php (never executed or included)
+- Import of `occ config:list --private` JSON and `occ app:list` (JSON or text)
+- Core checks: debug, trusted_domains, overwriteprotocol, trusted_proxies, brute-force, SSRF, integrity, updater, EOL
+- Secrets strength (masked): secret, passwordsalt, dbpassword, mail_smtppassword, redis password
+- Data-directory placement/permissions, sharing policy, 2FA enforcement, risky apps (files_external, workflow_script, impersonate)
+- Multi-format export, templates, `--demo` self-test, and CI severity gates
 
 ---
 
@@ -46,7 +43,10 @@ Nextcloud / ownCloud configuration hardening auditor (offline, read-only)
 ## 🚀 Usage
 
 ```bash
-./ONextcloudX
+./ONextcloudX -i /var/www/nextcloud --scan
+./ONextcloudX -c config.php --occ-config occ.json -f sarif -o nc.sarif
+./ONextcloudX --demo --fail-on high
+./ONextcloudX --help
 ```
 
 ---
